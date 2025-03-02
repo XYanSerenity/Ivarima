@@ -1,2 +1,4 @@
+^renv$
+^renv\.lock$
 ^Ivarima\.Rproj$
 ^\.Rproj\.user$
