@@ -2,13 +2,16 @@
 % Please edit documentation in R/functions.R
 \name{IdenPatternb}
 \alias{IdenPatternb}
-\title{Title}
+\title{Using the identification rules of the LTF model, automatically identify possible sets of b}
 \usage{
 IdenPatternb(modelxp)
 }
 \arguments{
-\item{modelxp}{}
+\item{modelxp}{a fitted LTF model}
+}
+\value{
+the possible sets of b
 }
 \description{
-Title
+Using the identification rules of the LTF model, automatically identify possible sets of b
 }

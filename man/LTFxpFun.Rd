@@ -2,13 +2,22 @@
 % Please edit documentation in R/functions.R
 \name{LTFxpFun}
 \alias{LTFxpFun}
-\title{Title}
+\title{Building the LTF model}
 \usage{
 LTFxpFun(y, x_p, rlist, LTFmaxk)
 }
 \arguments{
-\item{LTFmaxk}{}
+\item{y}{a univariate time series}
+
+\item{x_p}{a pulse function interrupted by an intervention event}
+
+\item{rlist}{The ARIMA model order (p, d, q) of noise component}
+
+\item{LTFmaxk}{The longest time-lagged response k in the LTF model}
+}
+\value{
+a fitted LTF model
 }
 \description{
-Title
+Building the LTF model
 }

@@ -2,13 +2,16 @@
 % Please edit documentation in R/functions.R
 \name{find_max_sign_diff}
 \alias{find_max_sign_diff}
-\title{Title}
+\title{Find  the position of  the maximum positive or negative change in v-weights of the LTF model}
 \usage{
 find_max_sign_diff(coefs)
 }
 \arguments{
-\item{coefs}{}
+\item{coefs}{LTF model v-weights}
+}
+\value{
+the position of the maximum positive or negative change
 }
 \description{
-Title
+Find  the position of  the maximum positive or negative change in v-weights of the LTF model
 }

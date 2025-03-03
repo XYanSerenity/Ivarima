@@ -8,8 +8,6 @@
 #' @param UnEvaledlist  List of unassessed models
 #' @return Updated list of unassessed models.
 #' @export
-#'
-#' @examples
 AddunEvaled <- function(key,xdata,xdatar,xdatab,xdatah,UnEvaledlist){
   if (!key %in% c(names(UnEvaledlist))) {
     UnEvaledlist[[key]] <- list(
@@ -22,24 +20,16 @@ AddunEvaled <- function(key,xdata,xdatar,xdatab,xdatah,UnEvaledlist){
   return(UnEvaledlist)
 }
 
-#' Title
-#'
-#' @param x
-#'
-#' @return
+
+#' Find the intermediate position corresponding to the maximum positive or negative change in the v-weights of the LTF model
+#' @param x  LTF model v-weights
+#' @return  the intermediate position corresponding to the maximum positive or negative change
 #' @export
-#'
-#' @examples
 find_middle_position <- function(x) {
-  # 找到最大正数和最大负数的原始索引
   max_pos <- which(x == max(x[x > 0]))
   min_neg <- which(x == min(x[x < 0]))
-
-  # 如果找到了正数和负数，返回它们之间的中间位置
   if (length(max_pos) > 0 && length(min_neg) > 0) {
-    # 计算最大正数和最小负数之间的范围
     if (abs(max_pos - min_neg) ==2) {
-      # 返回中间位置
       return(seq(min(max_pos, min_neg) + 1, max(max_pos, min_neg) - 1))
     } else {
       return(0)
@@ -49,24 +39,21 @@ find_middle_position <- function(x) {
   }
 }
 
-#' Title
-#'
-#' @param coefs
-#'
-#' @return
+#' Find  the position of  the maximum positive or negative change in v-weights of the LTF model
+#' @param coefs  LTF model v-weights
+#' @return the position of the maximum positive or negative change
 #' @export
 #'
-#' @examples
 find_max_sign_diff <- function(coefs) {
   max_diff <- 0
   max_diff_index <- NULL
   # 遍历相邻元素
   for (i in 1:(length(coefs) - 1)) {
-    if (coefs[i] * coefs[i + 1] < 0) { # 检查异号
-      diff <- abs(coefs[i] - coefs[i + 1]) # 计算绝对差值
+    if (coefs[i] * coefs[i + 1] < 0) {
+      diff <- abs(coefs[i] - coefs[i + 1])
       if (diff > max_diff) {
         max_diff <- diff
-        max_diff_index <- i # 记录当前差值起始位置
+        max_diff_index <- i
       }
     }
   }
@@ -76,19 +63,15 @@ find_max_sign_diff <- function(coefs) {
     return(max_diff_index)}
 }
 
-#' Title
-#'
-#' @param model
-#' @param num
-#'
-#' @return
+#' Find the peak value of the v-weights in the LTF model
+#' @param model the fitted LTF model
+#' @param num Number of LTF model v-weights
+#' @return  the position of the peak value
 #' @export
-#'
-#' @examples
 find_max_v <- function(model,num)
 {
   coef <- coeftest(model)
-  vcoef <- tail(coef,num)  # 提取最后11个系数
+  vcoef <- tail(coef,num)
   df_v <- data.frame(vcoef[!is.na(vcoef[, 1]), ])
   colnames(df_v) <- c("Coefficient", "Std_Error", "Z_Value", "P_Value")
   peak <- which.max(df_v $Coefficient)
@@ -96,17 +79,13 @@ find_max_v <- function(model,num)
   return(Ptpeak)
 }
 
-#' Title
-#'
-#' @param y
-#' @param x_p
-#' @param rlist
-#' @param LTFmaxk
-#'
-#' @return
+#' Building the LTF model
+#' @param y  a univariate time series
+#' @param x_p a pulse function interrupted by an intervention event
+#' @param rlist  The ARIMA model order (p, d, q) of noise component
+#' @param LTFmaxk The longest time-lagged response k in the LTF model
+#' @return a fitted LTF model
 #' @export
-#'
-#' @examples
 LTFxpFun <- function(y,x_p,rlist,LTFmaxk)
 {
   lagged_xp <- embed(x_p, LTFmaxk)  # 生成 11 阶滞后矩阵
@@ -127,32 +106,20 @@ LTFxpFun <- function(y,x_p,rlist,LTFmaxk)
 
 }
 
-#' Title
-#'
-#' @param modelxp
-#'
-#' @return
+#' Using the identification rules of the LTF model, automatically identify possible sets of b
+#' @param modelxp  a fitted LTF model
+#' @return  the possible sets of b
 #' @export
-#'
-#' @examples
 IdenPatternb <-function(modelxp)
 {
   coefpt <- coeftest(modelxp)
-  ptvcoef <- tail(coefpt, 11)  # 提取最后11个系数
+  ptvcoef <- tail(coefpt, 11)
   df_ptv <- data.frame(ptvcoef[!is.na(ptvcoef[, 1]), ])
   colnames(df_ptv) <- c("Coefficient", "Std_Error", "Z_Value", "P_Value")
-  # print(df_ptv)
-  ##调试时的画图
-  barplot(tail(coef(modelxp), 11),las=2)
-  # step1,找p最小点
   Ptminp <- which.max(abs(df_ptv$Coefficient))
-  # print("Ptminp")
-  #print(Ptminp)
   peak <- which.max(abs(df_ptv$Coefficient))
   Ptpeak <-df_ptv$Coefficient[peak]
   dmaxvsign <- find_max_sign_diff(df_ptv$Coefficient)
-  # print("dmaxvsign")
-  # print(dmaxvsign)
   if(Ptminp == 1)
   {
     dmaxvsign <- find_max_sign_diff(df_ptv$Coefficient)
@@ -162,14 +129,11 @@ IdenPatternb <-function(modelxp)
       {return(list(b = 0))}else{ return(list(b = c(0,dmaxvsign)))}}
   }else
   {
-    #print("p_t识别规则")
-    # 判断 i = 1 到 Ptminp-1 的所有条件
     condition <- all(
       df_ptv$P_Value[1:(Ptminp - 1)] > 0.05 |
         (abs(df_ptv$Coefficient[1:(Ptminp - 1)] / Ptpeak) < 0.3)
     )
     if (condition) {
-      # print("向前识别规则满足")
       if(all(abs(df_ptv$Coefficient[1:(Ptminp - 1)] / Ptpeak) < 0.3))
       {
         if(!is.null(dmaxvsign))
@@ -186,7 +150,6 @@ IdenPatternb <-function(modelxp)
       }else{
         Ptminp1 <- Ptminp - 1
         dmaxvsign <- find_max_sign_diff(df_ptv$Coefficient)
-        # print(dmaxvsign)
         if(!is.null(dmaxvsign)){
           if(Ptminp1 == dmaxvsign)
           {
@@ -208,7 +171,6 @@ IdenPatternb <-function(modelxp)
         else{
           numb<-c(0)
         }
-        ##diffmav
         dmaxv <-find_middle_position(df_ptv$Coefficient)
         if(dmaxv!=0){
           dmaxv <-dmaxv-1
@@ -284,19 +246,14 @@ IdenPatternb <-function(modelxp)
     }
   }
 }
-#' Title
-#'
-#' @param Evaled
-#'
-#' @return
+#' Find the optimal model with the smallest AIC from the evaluated models
+#' @param Evaled the evaluated models
+#' @return The optimal model's name and its AIC value.
 #' @export
 #'
-#' @examples
 FindMinAic <- function(Evaled) {
-  # 初始化最小 aic 值和对应的元素名称
   min_aic <- Inf
   min_ele <- NULL
-  # 遍历 Evaled 列表，寻找 aic 最小的元素
   for (name in names(Evaled)) {
     if (!is.null(Evaled[[name]]$aic)) {
       cur_aic <- Evaled[[name]]$aic
@@ -334,7 +291,7 @@ FindMinAic <- function(Evaled) {
             min_ele <- name
           }else
           {
-            # print("888")
+
             min_aic <- min_aic
             min_ele <- min_ele
           }
@@ -383,13 +340,9 @@ FindMinAic <- function(Evaled) {
   # 返回最小 aic 值和对应的元素名称
   return(list(min_ele= min_ele, aic = min_aic))
 }
-#' Title
-#'
-#' @param mode
-#'
-#' @return
-#' @export
-
+#' Extract the intervention component and intercept coefficients of the ARIMA model.
+#' @param mode  a fitted LTF model
+#' @return the coefficients of the intervention component and intercept
 Tracoef<- function(mode)
 {
   coef <- coef(mode)

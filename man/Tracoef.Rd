@@ -2,13 +2,16 @@
 % Please edit documentation in R/functions.R
 \name{Tracoef}
 \alias{Tracoef}
-\title{Title}
+\title{Extract the intervention component and intercept coefficients of the ARIMA model.}
 \usage{
 Tracoef(mode)
 }
 \arguments{
-\item{mode}{}
+\item{mode}{a fitted LTF model}
+}
+\value{
+the coefficients of the intervention component and intercept
 }
 \description{
-Title
+Extract the intervention component and intercept coefficients of the ARIMA model.
 }

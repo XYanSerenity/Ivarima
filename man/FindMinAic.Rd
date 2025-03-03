@@ -2,13 +2,16 @@
 % Please edit documentation in R/functions.R
 \name{FindMinAic}
 \alias{FindMinAic}
-\title{Title}
+\title{Find the optimal model with the smallest AIC from the evaluated models}
 \usage{
 FindMinAic(Evaled)
 }
 \arguments{
-\item{Evaled}{}
+\item{Evaled}{the evaluated models}
+}
+\value{
+The optimal model's name and its AIC value.
 }
 \description{
-Title
+Find the optimal model with the smallest AIC from the evaluated models
 }

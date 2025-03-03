@@ -2,13 +2,16 @@
 % Please edit documentation in R/functions.R
 \name{find_middle_position}
 \alias{find_middle_position}
-\title{Title}
+\title{Find the intermediate position corresponding to the maximum positive or negative change in the v-weights of the LTF model}
 \usage{
 find_middle_position(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{LTF model v-weights}
+}
+\value{
+the intermediate position corresponding to the maximum positive or negative change
 }
 \description{
-Title
+Find the intermediate position corresponding to the maximum positive or negative change in the v-weights of the LTF model
 }

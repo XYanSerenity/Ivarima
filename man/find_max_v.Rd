@@ -2,13 +2,18 @@
 % Please edit documentation in R/functions.R
 \name{find_max_v}
 \alias{find_max_v}
-\title{Title}
+\title{Find the peak value of the v-weights in the LTF model}
 \usage{
 find_max_v(model, num)
 }
 \arguments{
-\item{num}{}
+\item{model}{the fitted LTF model}
+
+\item{num}{Number of LTF model v-weights}
+}
+\value{
+the position of the peak value
 }
 \description{
-Title
+Find the peak value of the v-weights in the LTF model
 }
