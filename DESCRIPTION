@@ -12,7 +12,7 @@ Imports:
     tseries,
     zoo
 Authors@R: 
-    person("Yan", "Xie", "xieyanacw@163.com", role = c("aut", "cre"))
+    person("Yan", "Xie", email = "xie.yanist@qq.com", role = c("aut", "cre"))
 Description: This package implements a rule-based automated method for identifying the optimal intervention impact model for interrupted time series. The approach combines the strengths of both the LTF and sequential Koyck model identification rules.
 License: GPL-3
 Encoding: UTF-8

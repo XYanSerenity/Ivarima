@@ -460,11 +460,9 @@ ArimaOptExtr <- function(modelAR){
 #' @export
 #' @examples
 #' w0 <-0.5
-#' w1 <- 0.5
 #' n<-100
 #' xt6 <- c(rep(0, 56), rep(1,44))
 #' e <- arima.sim(model = list(order = c(1,0,0), ar = 0.4, ma = NULL), n = 100, sd = 0.1)
-#' a <- 0
 #' xxt <- w0 * xt6
 #' mu <- 4 + xxt
 #' y <- mu + e
