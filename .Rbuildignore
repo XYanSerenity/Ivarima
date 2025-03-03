@@ -2,3 +2,4 @@
 ^renv\.lock$
 ^Ivarima\.Rproj$
 ^\.Rproj\.user$
+^README\.Rmd$
