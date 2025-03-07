@@ -22,7 +22,7 @@ You can install the development version of Ivarima from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
+install.packages("pak")
 pak::pak("XYanSerenity/Ivarima")
 ```
 
@@ -31,9 +31,7 @@ pak::pak("XYanSerenity/Ivarima")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-#library(Ivarima)
-
-#library(Ivarima)
+library(Ivarima)
 w0 <- 0.5
 n <- 100
 xt6 <- c(rep(0, 56), rep(1, 44))
