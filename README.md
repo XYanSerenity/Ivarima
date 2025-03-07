@@ -9,7 +9,7 @@
 This package implements a rule-based automated method for identifying
 the optimal intervention impact model for intervention ARIMA model.This
 method utilizes the impulse response function of the LTF model to infer
-the possible delay time and adopts the sequential Koyck model
+the possible delay time (b) and adopts the sequential Koyck model
 identification rules to guide the identification of decay pattern (h)
 and unpatterned spikes (r). An example describing how to install and use
 this package is described below. A more detailed tutorial, including the
