@@ -512,7 +512,7 @@ auto.ivarima <- function(y, its_start, LTFmaxk) {
   if (length(Evaledlist) > 0) {
     findresult <- FindMinAic(Evaledlist)
     optname <- findresult$min_ele
-    return(Evaledmodel[[optname]]$model)
+    return(list(optname=optname,model= Evaledmodel[[optname]]$model))
   } else {
     return(NULL)
   }
