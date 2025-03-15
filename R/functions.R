@@ -47,7 +47,6 @@ find_middle_position <- function(x) {
 find_max_sign_diff <- function(coefs) {
   max_diff <- 0
   max_diff_index <- NULL
-  # 遍历相邻元素
   for (i in 1:(length(coefs) - 1)) {
     if (coefs[i] * coefs[i + 1] < 0) {
       diff <- abs(coefs[i] - coefs[i + 1])
@@ -86,13 +85,10 @@ find_max_v <- function(model, num) {
 #' @return a fitted LTF model
 #' @export
 LTFxpFun <- function(y, x_p, rlist, LTFmaxk) {
-  lagged_xp <- embed(x_p, LTFmaxk) # 生成 11 阶滞后矩阵
-  # 定义自定义的列名，例如 "lag1", "lag2", ..., "lag11"
+  lagged_xp <- embed(x_p, LTFmaxk)
   xpvn <- LTFmaxk - 1
-  xp_names <- paste0("xpv", 0:xpvn) # 根据需要修改列名格式
-  # 修改列名
+  xp_names <- paste0("xpv", 0:xpvn)
   colnames(lagged_xp) <- xp_names
-  # 由于 embed() 函数从最近的时间点开始滞后，所以我们只保留相应的有效 y 值
   y_clean <- tail(y, nrow(lagged_xp))
   TFpt <- try(arima(y_clean, order = rlist, xreg = lagged_xp, method = "ML"))
   if (inherits(TFpt, "try-error")) {
@@ -294,7 +290,7 @@ FindMinAic <- function(Evaled) {
       }
     }
   }
-  # 返回最小 aic 值和对应的元素名称
+
   return(list(min_ele = min_ele, aic = min_aic))
 }
 #' Extract the intervention component and intercept coefficients of the ARIMA model.
@@ -388,7 +384,7 @@ OptimInarimax <- function(y, order, xtransf, transfer) {
 #' @return The ArimaOptExtr function returns a vector which is the p,d,q parameters
 #' @export
 ArimaOptExtr <- function(modelAR) {
-  # 提取非季节性部分的参数 (p, d, q)
+
   non_seasonal_order <- modelAR$arma[c(1, 6, 2)]
   return(non_seasonal_order)
 }
