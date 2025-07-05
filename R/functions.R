@@ -102,125 +102,88 @@ LTFxpFun <- function(y, x_p, rlist, LTFmaxk) {
 #' @param modelxp  a fitted LTF model
 #' @return  the possible sets of b
 #' @export
-IdenPatternb <- function(modelxp) {
-  coefpt <- lmtest::coeftest(modelxp)
-  ptvcoef <- tail(coefpt, 11)
+
+IdenPatternb <-function(modelxp)
+{
+  coefpt <- coeftest(modelxp)
+  ptvcoef <- tail(coefpt, 11)  # 提取最后11个系数
   df_ptv <- data.frame(ptvcoef[!is.na(ptvcoef[, 1]), ])
   colnames(df_ptv) <- c("Coefficient", "Std_Error", "Z_Value", "P_Value")
+  # print(df_ptv)
+  ##调试时的画图
+  barplot(tail(coef(modelxp), 11),las=2)
+  # step1,找p最小点
   Ptminp <- which.max(abs(df_ptv$Coefficient))
+  # print("Ptminp")
+  #print(Ptminp)
   peak <- which.max(abs(df_ptv$Coefficient))
-  Ptpeak <- df_ptv$Coefficient[peak]
+  Ptpeak <-df_ptv$Coefficient[peak]
   dmaxvsign <- find_max_sign_diff(df_ptv$Coefficient)
-  if (Ptminp == 1) {
-    dmaxvsign <- find_max_sign_diff(df_ptv$Coefficient)
-    if (is.null(dmaxvsign) || dmaxvsign == 0) {
-      return(list(b = 0))
-    } else {
-      if (abs(df_ptv$Coefficient[dmaxvsign] / Ptpeak) < 0.3 && abs(df_ptv$Coefficient[dmaxvsign + 1] / Ptpeak) < 0.3) {
-        return(list(b = 0))
-      } else {
-        return(list(b = c(0, dmaxvsign)))
-      }
-    }
-  } else {
+  if(Ptminp==1)
+  {
+    return(list(b = 0))
+  }else{
     condition <- all(
-      df_ptv$P_Value[1:(Ptminp - 1)] > 0.05 |
-        (abs(df_ptv$Coefficient[1:(Ptminp - 1)] / Ptpeak) < 0.3)
+      (abs(df_ptv$Coefficient[1:(Ptminp - 1)] / Ptpeak) < 0.3)
     )
-    if (condition) {
-      if (all(abs(df_ptv$Coefficient[1:(Ptminp - 1)] / Ptpeak) < 0.3)) {
-        if (!is.null(dmaxvsign)) {
-          if (dmaxvsign == Ptminp - 1) {
-            return(list(b = Ptminp - 1))
-          } else {
-            return(list(b = c(Ptminp - 1, dmaxvsign)))
-          }
-        } else {
-          return(list(b = Ptminp - 1))
-        }
-      } else {
-        Ptminp1 <- Ptminp - 1
-        dmaxvsign <- find_max_sign_diff(df_ptv$Coefficient)
-        if (!is.null(dmaxvsign)) {
-          if (Ptminp1 == dmaxvsign) {
-            numb <- Ptminp1
-          } else {
-            numb <- c(Ptminp1, dmaxvsign)
-          }
-          if (dmaxvsign > 1) {
-            if (df_ptv$Coefficient[dmaxvsign - 1] * df_ptv$Coefficient[dmaxvsign + 1] < 0) {
-              dmaxvsign1 <- dmaxvsign - 1
-              if (!dmaxvsign1 %in% numb) {
-                numb <- c(numb, dmaxvsign1)
-              }
-            }
-          }
-        } else {
-          numb <- c(0)
-        }
-        dmaxv <- find_middle_position(df_ptv$Coefficient)
-        if (dmaxv != 0) {
-          dmaxv <- dmaxv - 1
-          if (!dmaxv %in% numb) {
-            numb <- c(numb, dmaxv)
-          }
-        }
-        if (Ptminp > 2) {
-          if (abs(df_ptv$Coefficient[Ptminp - 2] / Ptpeak) < 0.3) {
-            Ptminp2 <- Ptminp - 2
-            if (!Ptminp2 %in% numb) {
-              numb <- c(numb, Ptminp2)
-            }
-          }
-        }
-        return(list(b = numb))
-      }
-    } else {
+    if (condition)
+    {
+      return(list(b = Ptminp - 1))
+    }else{
       numb <- 0
-      for (pi in 1:(Ptminp - 1)) {
-        if (df_ptv$P_Value[pi] > 0.05 || abs(df_ptv$Coefficient[pi] / Ptpeak) < 0.3) {
-          numb <- numb + 1
-        } else {
-          break
+      if(Ptminp>1){
+        for (pi in 1:(Ptminp- 1)) {
+          if (df_ptv$P_Value[pi] > 0.05 | abs(df_ptv$Coefficient[pi] / Ptpeak) < 0.3) {
+            numb <- numb + 1
+          } else {
+            break
+          }
+        }}
+      print(numb)
+      Ptminp1 <- Ptminp - 1
+      if(!is.null(dmaxvsign))
+      {
+        if(numb == dmaxvsign)
+        {
+          numb <- numb
+        }else
+        {
+          numb <- c(numb,dmaxvsign)
         }
       }
-
-      Ptminp1 <- Ptminp - 1
-      if (!is.null(dmaxvsign)) {
-        if (numb == dmaxvsign) {
-          numb <- numb
-        } else {
-          numb <- c(numb, dmaxvsign)
+      print(numb)
+      ##diffmav
+      dmaxv <-find_middle_position(df_ptv$Coefficient)
+      if(dmaxv!=0){
+        if(!dmaxv%in%numb)
+        {
+          numb <-c(numb,dmaxv)
         }
-        if (dmaxvsign > 1 && df_ptv$Coefficient[dmaxvsign - 1] * df_ptv$Coefficient[dmaxvsign + 1] < 0) {
-          dmaxvsign1 <- dmaxvsign - 1
-          if (!dmaxvsign1 %in% numb) {
-            numb <- c(numb, dmaxvsign1)
+      }
+      if(Ptminp1>0){
+        if(df_ptv$Coefficient[Ptminp1] / Ptpeak< 0.3)
+        {
+          if (!Ptminp1%in%numb){
+            return(list(b = c(numb,Ptminp1)))
+          }else {
+            return(list(b = numb))
+          }
+        }else{
+          if (!Ptminp1%in%numb){
+            numb = c(numb,Ptminp1)
+          }
+        }}
+      if(Ptminp > 2 )
+      {
+        if(abs(df_ptv$Coefficient[Ptminp - 2] / Ptpeak)< 0.3)
+        {
+          Ptminp2<-Ptminp - 2
+          if(!Ptminp2 %in%numb){
+            numb <-c(numb,Ptminp2)
           }
         }
       }
-      ## diffmav
-      dmaxv <- find_middle_position(df_ptv$Coefficient)
-      if (dmaxv != 0) {
-        dmaxv <- dmaxv - 1
-        if (!dmaxv %in% numb) {
-          numb <- c(numb, dmaxv)
-        }
-      }
-      if (df_ptv$Coefficient[Ptminp1] / Ptpeak < 0.3) {
-        if (!Ptminp1 %in% numb) {
-          return(list(b = c(numb, Ptminp1)))
-        } else {
-          return(list(b = numb))
-        }
-      } else {
-        Ptmin2 <- Ptminp1 - 1
-        if (!Ptmin2 %in% numb) {
-          return(list(b = c(numb, Ptmin2)))
-        } else {
-          return(list(b = numb))
-        }
-      }
+      return(list(b = numb))
     }
   }
 }
