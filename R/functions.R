@@ -102,7 +102,7 @@ LTFxpFun <- function(y, x_p, rlist, LTFmaxk) {
 #' @param modelxp  a fitted LTF model
 #' @return  the possible sets of b
 #' @export
-
+##AAA
 IdenPatternb <-function(modelxp)
 {
   coefpt <- coeftest(modelxp)
