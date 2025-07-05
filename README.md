@@ -48,8 +48,8 @@ e <- arima.sim(model = list(order = c(1, 0, 0), ar = 0.4, ma = NULL), n = 100, s
 xxt <- w0 * xt6
 mu <- 4 + xxt
 y <- mu + e
-#model <- auto.ivarima(y = y, its_start = 51, LTFmaxk = 10)
-#summary(model)
+model <- auto.ivarima(y = y, its_start = 51, LTFmaxk = 10)
+summary(model)
 ```
 
 The auto.ivarima function returns a list with two elements: (i) identified impact pattern, a character string where the first three digits represent the orders of h, b, and r, respectively, the remaining characters “step” represent a step intervention, “pulse” represent a pulse intervention, “pulseD” represent a pulse with a decay intervention;  (ii) the fitted optimal interventional ARIMA model.
