@@ -26,15 +26,9 @@ This package implements a rule-based automated method for identifying the optima
 You can install the development version of Ivarima from [GitHub](https://github.com/) with:
 
 ``` r
-install.packages("pak")
+#install.packages("pak")
 pak::pak("XYanSerenity/Ivarima")
 ```
-
-  The ‘Ivarima’ R package includes four main functions:
-  1. IdenPatternb() – Identify the candidate b values. This function determines the b values that best align with the theoretical b-pattern.
-  2. OptimInarimax() – An improved parameter estimation method for TSA::arimax. This function focuses on obtaining suitable initial parameter estimates for the intervention component and intercept term, which serve as starting values for the BFGS algorithm search, reducing the risk of suboptimal results.
-  3. FindMinAic() – Selects the optimal model from the evaluated interventional ARIMA models using the evaluation criteria we developed.
-  4. auto.ivarima() – Automates the identification process of the impact pattern.
 
 ## Example
 
@@ -54,7 +48,6 @@ model <- auto.ivarima(y = y, its_start = 51, LTFmaxk = 10)
 summary(model)
 ```
 
-The auto.ivarima function returns a list with two elements: (i) identified impact pattern, a character string where the first three digits represent the orders of h, b, and r, respectively, the remaining characters “step” represent a step intervention, “pulse” represent a pulse intervention, “pulseD” represent a pulse with a decay intervention;  (ii) the fitted optimal interventional ARIMA model.
 
 
 

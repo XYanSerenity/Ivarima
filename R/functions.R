@@ -105,7 +105,7 @@ LTFxpFun <- function(y, x_p, rlist, LTFmaxk) {
 ##AAA
 IdenPatternb <-function(modelxp)
 {
-  coefpt <- coeftest(modelxp)
+  coefpt <- lmtest::coeftest(modelxp)
   ptvcoef <- tail(coefpt, 11)  # 提取最后11个系数
   df_ptv <- data.frame(ptvcoef[!is.na(ptvcoef[, 1]), ])
   colnames(df_ptv) <- c("Coefficient", "Std_Error", "Z_Value", "P_Value")
