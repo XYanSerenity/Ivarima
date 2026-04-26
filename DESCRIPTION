@@ -2,7 +2,7 @@ Package: Ivarima
 Type: Package
 Title: Automated Impact Pattern Identification for Interventional ARIMA Models
 Version: 0.1.0
-Authors@R: person(given = "Yan", family = "Xie", role = c("aut", "cre"), email = "your.email@example.com")
+Authors@R: person(given = "Yan", family = "Xie", role = c("aut", "cre"), email = "398308996@qq.com")
 Description: Provides rule-based functions for automatically identifying intervention impact patterns in interventional ARIMA models. The package constructs candidate transfer functions, estimates candidate ARIMAX models, checks residual independence, and selects the optimal model using model adequacy and information criteria.
 License: MIT + file LICENSE
 Encoding: UTF-8
