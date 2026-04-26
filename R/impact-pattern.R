@@ -1214,5 +1214,5 @@ auto_identify_impact_pattern <- function(y, intervention_point, k = 11L) {
 #' )
 #'
 #' result <- auto_identify_impact_pattern(y,  intervention_point = 82, k = 11)
-#' result$bestmod
+#' result$selected_model$best_model 
 #' 
