@@ -17,8 +17,6 @@ devtools::install_github("XYanSerenity/Ivarima")
 ```r
 library(Ivarima)
 
-library(Ivarima)
-
 y <- c(
   4.9, 5.2, 5.7, 5.7, 6.2, 6.7, 6.9, 7.1, 6.6, 7.0,
   6.9, 6.4, 6.6, 6.4, 7.0, 7.3, 6.0, 6.3, 4.8, 5.3,
@@ -38,6 +36,7 @@ result <- auto_identify_impact_pattern(
   k = 11
 )
 
-result$bestmod
+result$selected_model$best_model 
+
 
 ```
