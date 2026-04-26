@@ -1,0 +1,4 @@
+export(auto_identify_impact_pattern)
+export(calculate_result)
+export(lag0_fill)
+importFrom(stats,AIC,BIC,Box.test,arima,coef,residuals)
